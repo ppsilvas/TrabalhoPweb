@@ -1,6 +1,9 @@
 package br.edu.ifba.inf012.internetBanking.models;
 
+import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoForm;
+import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoPagamento;
 import br.edu.ifba.inf012.internetBanking.enums.TipoOperacao;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -12,13 +15,19 @@ public class Operacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private TipoOperacao tipo;
-    private BigDecimal valor;
+    @Nullable
+    private String valor;
     private LocalDateTime dataHora;
+    @Nullable
     private String descricao;
-    @OneToMany
-    private Conta conta;
+    @ManyToOne
+    private ContaCorrente conta;
 
-    public Operacao(Long id, TipoOperacao tipo, BigDecimal valor, LocalDateTime dataHora, String descricao, Conta conta) {
+    public Operacao() {
+		super();
+	}
+
+	public Operacao(Long id, TipoOperacao tipo, String valor, LocalDateTime dataHora, String descricao, ContaCorrente conta) {
         this.id = id;
         this.tipo = tipo;
         this.valor = valor;
@@ -27,7 +36,25 @@ public class Operacao {
         this.conta = conta;
     }
 
-    public Long getId() {
+	public Operacao(OperacaoForm operacao, ContaCorrente conta) {
+		this.id = operacao.id();
+    	this.tipo = operacao.tipo();
+    	this.valor = operacao.valor();
+    	this.dataHora = LocalDateTime.now();
+    	this.descricao = null;
+    	this.conta = conta;
+    }
+
+	public Operacao(OperacaoPagamento operacao, ContaCorrente conta) {
+		this.id = operacao.id();
+    	this.tipo = TipoOperacao.PAGAMENTO;
+    	this.valor = operacao.valor();
+    	this.dataHora = LocalDateTime.now();
+    	this.descricao = operacao.descricao();
+    	this.conta = conta;
+	}
+
+	public Long getId() {
         return id;
     }
 
@@ -35,7 +62,11 @@ public class Operacao {
         return tipo;
     }
 
-    public BigDecimal getValor() {
+    public BigDecimal getValorDecimal() {
+        return new BigDecimal(valor);
+    }
+    
+    public String getValorString() {
         return valor;
     }
 
@@ -47,7 +78,7 @@ public class Operacao {
         return descricao;
     }
 
-    public Conta getConta() {
+    public ContaCorrente getConta() {
         return conta;
     }
 }
