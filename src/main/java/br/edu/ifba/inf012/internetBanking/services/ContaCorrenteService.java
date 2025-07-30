@@ -1,5 +1,7 @@
 package br.edu.ifba.inf012.internetBanking.services;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import br.edu.ifba.inf012.internetBanking.dtos.contaCorrente.ContaDto;
@@ -19,16 +21,15 @@ public class ContaCorrenteService {
 		this.ccRepository = ccRepository;
 	}
 	
-	public ContaDto criarNovaContaCorrente(ContaForm contaCorrente, Usuario usuario) {
-		ContaCorrente novaContaCorrente = this.ccRepository.save(new ContaCorrente(contaCorrente, usuario));
-		return new ContaDto(novaContaCorrente);
+	public ContaCorrente criarNovaContaCorrente(ContaForm contaCorrente, Usuario usuario) {
+		return this.ccRepository.save(new ContaCorrente(contaCorrente, usuario));
 	}
 	
-	public ContaDto buscaContaCorrentePorUsuario(Long id) {
-		ContaCorrente conta = this.ccRepository.findByUsuarioId(id);
-		if(conta == null)
-			throw new RuntimeException("Usuario não existe");
-		return new ContaDto(conta);
+	public ContaDto buscaContaCorrentePorUsuario(Long id) throws Exception {
+		Optional<ContaCorrente> conta = this.ccRepository.findById(id);
+		if(conta.isEmpty())
+			throw new Exception("Usuario não existe");
+		return new ContaDto(conta.get());
 	}
 
 }
