@@ -1,9 +1,7 @@
 package br.edu.ifba.inf012.internetBanking.models;
 
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoForm;
-import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoPagamento;
 import br.edu.ifba.inf012.internetBanking.enums.TipoOperacao;
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,13 +12,15 @@ public class Operacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable=false)
     private TipoOperacao tipo;
-    @Nullable
+    @Column(nullable=false)
     private String valor;
     private LocalDateTime dataHora;
-    @Nullable
     private String descricao;
     @ManyToOne
+    @JoinColumn(name = "conta_id")
     private ContaCorrente conta;
 
     public Operacao() {
@@ -41,18 +41,9 @@ public class Operacao {
     	this.tipo = operacao.tipo();
     	this.valor = operacao.valor();
     	this.dataHora = LocalDateTime.now();
-    	this.descricao = null;
-    	this.conta = conta;
-    }
-
-	public Operacao(OperacaoPagamento operacao, ContaCorrente conta) {
-		this.id = operacao.id();
-    	this.tipo = TipoOperacao.PAGAMENTO;
-    	this.valor = operacao.valor();
-    	this.dataHora = LocalDateTime.now();
     	this.descricao = operacao.descricao();
     	this.conta = conta;
-	}
+    }
 
 	public Long getId() {
         return id;

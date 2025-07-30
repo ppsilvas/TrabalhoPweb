@@ -2,7 +2,8 @@ package br.edu.ifba.inf012.internetBanking.models;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,34 +19,47 @@ public class Usuario implements UserDetails{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+	@Column(nullable=false)
     private String nome;
-    @Column(unique=true)
+    @Column(nullable=false,unique=true)
     private String cpf;
-    @Column(unique=true)
+    @Column(nullable=false,unique=true)
     private String email;
+    @Column(nullable=false)
     private String senha;
-    private LocalDate dataCadastro;
+    private LocalDateTime dataCadastro;
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private ContaCorrente conta;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+		name="usuario_roles",
+		joinColumns = @JoinColumn(name = "usuario_id"),
+		inverseJoinColumns = @JoinColumn(name = "role_id")
+    )
+    private List<Role> roles = new ArrayList<Role>();
 
     public Usuario() {
 		super();
 	}
 
-	public Usuario(Long id, String nome, String cpf, String email, String senha, LocalDate dataCadastro) {
+	public Usuario(Long id, String nome, String cpf, String email, String senha, LocalDateTime dataCadastro, List<Role> roles) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
         this.senha = senha;
         this.dataCadastro = dataCadastro;
+        this.roles = roles;
     }
 
-    public Usuario(UsuarioForm usuario) {
+    public Usuario(UsuarioForm usuario, Collection<? extends GrantedAuthority> roles) {
     	this.id = usuario.id();
     	this.nome = usuario.nome();
     	this.cpf = usuario.cpf();
     	this.email = usuario.email();
     	this.senha = usuario.senha();
-    	this.dataCadastro = usuario.dataCadastro();
+    	this.dataCadastro = LocalDateTime.now();
+    	this.roles = roles.stream().map(role->(Role)role).toList();
     }
 
 	public Long getId() {
@@ -68,21 +82,21 @@ public class Usuario implements UserDetails{
         return senha;
     }
 
-    public LocalDate getDataCadastro() {
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
-
-	public void setEmail(String email) {
-		this.email = email;
+	
+	public ContaCorrente getConta() {
+		return conta;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public List<Role> getRoles() {
+		return roles;
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+		return this.roles;
 	}
 
 	@Override
@@ -93,6 +107,14 @@ public class Usuario implements UserDetails{
 	@Override
 	public String getUsername() {
 		return this.email;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+	
+	public void setRoles(Collection<? extends GrantedAuthority>roles) {
+		this.roles =  roles.stream().map(role->(Role)role).toList();
 	}
     
 }
