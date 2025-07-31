@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.br.CPF;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,6 +24,7 @@ public class Usuario implements UserDetails{
 	@Column(nullable=false)
     private String nome;
     @Column(nullable=false,unique=true)
+    @CPF
     private String cpf;
     @Column(nullable=false,unique=true)
     private String email;
