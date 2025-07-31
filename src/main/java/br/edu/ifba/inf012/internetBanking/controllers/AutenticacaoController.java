@@ -3,6 +3,7 @@ package br.edu.ifba.inf012.internetBanking.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +16,7 @@ import br.edu.ifba.inf012.internetBanking.services.JWTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api/auth")
 public class AutenticacaoController {

@@ -1,12 +1,12 @@
 package br.edu.ifba.inf012.internetBanking.controllers;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.edu.ifba.inf012.internetBanking.annotations.enums.ValidEnumValue;
 import br.edu.ifba.inf012.internetBanking.dtos.contaCorrente.ContaDto;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoDto;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoExtrato;
@@ -24,7 +25,9 @@ import br.edu.ifba.inf012.internetBanking.models.ContaCorrente;
 import br.edu.ifba.inf012.internetBanking.services.OperacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.constraints.PastOrPresent;
 
+@CrossOrigin(origins="http://localhost:3000")
 @RestController
 @RequestMapping("/api/operacoes")
 public class OperacaoController {
@@ -41,9 +44,6 @@ public class OperacaoController {
 	@PostMapping("/deposito")
 	public ResponseEntity<OperacaoDto> realizarDeposito(@RequestBody OperacaoForm operacao) throws Exception {
 		try {
-			if(new BigDecimal(operacao.valor()).compareTo(new BigDecimal("0.0"))<=0) {
-				return ResponseEntity.badRequest().build();
-			}
 			OperacaoDto depositoRealizado = this.operacaoService.realizarDeposito(operacao);
 			return ResponseEntity.status(HttpStatus.CREATED).body(depositoRealizado);
 		}catch(Exception ex) {
@@ -59,9 +59,6 @@ public class OperacaoController {
 	@Secured(value = {"ROLE_OWNER"})
 	public ResponseEntity<OperacaoDto> realizarSaque(@RequestBody OperacaoForm operacao, @PathVariable Long usuarioId) throws Exception {
 		try {
-			if(new BigDecimal(operacao.valor()).compareTo(new BigDecimal("0.0"))<=0) {
-				return ResponseEntity.badRequest().build();
-			}
 			OperacaoDto saqueRealizado = this.operacaoService.realizarSaque(operacao, usuarioId);
 			return ResponseEntity.status(HttpStatus.CREATED).body(saqueRealizado);
 		}catch(Exception ex) {
@@ -79,9 +76,6 @@ public class OperacaoController {
 	@Secured(value = {"ROLE_OWNER"})
 	public ResponseEntity<OperacaoDto> realizarPagamento(@RequestBody OperacaoForm operacao, @PathVariable Long usuarioId) throws Exception {
 		try{
-			if(new BigDecimal(operacao.valor()).compareTo(new BigDecimal("0.0"))<=0) {
-				return ResponseEntity.badRequest().build();
-			}
 		OperacaoDto pagamentoRealizado = this.operacaoService.realizarPagamento(operacao, usuarioId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(pagamentoRealizado);
 		}catch(Exception ex) {
@@ -95,9 +89,13 @@ public class OperacaoController {
 	
 	@Operation(summary="Listar Operacações", description="Retorna o extrato o usuario(lista das operações)")
 	@ApiResponse(responseCode="200", description="Retorna lista de operações")
-	@GetMapping("/extrato/{id}")
+	@GetMapping("/{id}/extrato")
 	@Secured(value = {"ROLE_OWNER"})
-	public ResponseEntity<List<OperacaoExtrato>> extrato(@RequestParam(required=false) TipoOperacao tipo, @RequestParam(required=false) LocalDate dataInicio, @RequestParam(required=false) LocalDate dataFim, @PathVariable Long id) throws Exception{
+	public ResponseEntity<List<OperacaoExtrato>> extrato(
+			@RequestParam(required=false) @ValidEnumValue(enumClass = TipoOperacao.class) TipoOperacao tipo,
+			@RequestParam(required=false) @PastOrPresent LocalDate dataInicio,
+			@RequestParam(required=false) @PastOrPresent LocalDate dataFim,
+			@PathVariable Long id) throws Exception{
 		try {	
 			List<OperacaoExtrato> extrato = this.operacaoService.pegarExtrato(id, tipo, dataFim, dataFim);
 			if(extrato == null) {
