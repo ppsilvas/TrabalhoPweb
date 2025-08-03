@@ -12,7 +12,7 @@ target/
 .settings
 .springBeans
 .sts4-cache
-application.properties
+/c/Dev/Estudos/IFBA/Semestre4/PWeb/backend/internetBanking/src/main/resources/application.properties"
 
 ### IntelliJ IDEA ###
 .idea
