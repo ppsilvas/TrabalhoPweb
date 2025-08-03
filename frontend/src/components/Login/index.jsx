@@ -1,7 +1,10 @@
 import axios from '../../services/api';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+
+    const navigate = useNavigate()
 
     //TODO: Evitar repetição de código com Cadastro
     const [usuario, setUsuario] = useState({
