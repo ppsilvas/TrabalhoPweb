@@ -1,3 +1,11 @@
+import axios from 'axios';
+import {useState} from 'react';
+
 function Cadastro(){
-    return(<h1>Oi</h1>);
+
+    //const [usuario, setUsuario] = useState({nome:'', cpf:'', email:'', senha:''})
+
+    return(
+        <h1>hii</h1>
+    );
 }export default Cadastro;
