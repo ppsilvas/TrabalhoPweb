@@ -1,6 +1,6 @@
 package br.edu.ifba.inf012.internetBanking.controllers;
 
-import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
@@ -12,20 +12,18 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.edu.ifba.inf012.internetBanking.annotations.enums.ValidEnumValue;
 import br.edu.ifba.inf012.internetBanking.dtos.contaCorrente.ContaDto;
+import br.edu.ifba.inf012.internetBanking.dtos.operacao.FiltroExtratoDto;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoDto;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoExtrato;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoForm;
-import br.edu.ifba.inf012.internetBanking.enums.TipoOperacao;
 import br.edu.ifba.inf012.internetBanking.models.ContaCorrente;
 import br.edu.ifba.inf012.internetBanking.services.OperacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.Valid;
 
 @CrossOrigin(origins="http://localhost:3000")
 @RestController
@@ -92,18 +90,19 @@ public class OperacaoController {
 	@GetMapping("/{id}/extrato")
 	@Secured(value = {"ROLE_OWNER"})
 	public ResponseEntity<List<OperacaoExtrato>> extrato(
-			@RequestParam(required=false) @ValidEnumValue(enumClass = TipoOperacao.class) TipoOperacao tipo,
-			@RequestParam(required=false) @PastOrPresent LocalDate dataInicio,
-			@RequestParam(required=false) @PastOrPresent LocalDate dataFim,
+			@RequestBody(required=false) @Valid FiltroExtratoDto filtro,
 			@PathVariable Long id) throws Exception{
 		try {	
-			List<OperacaoExtrato> extrato = this.operacaoService.pegarExtrato(id, tipo, dataFim, dataFim);
+			List<OperacaoExtrato> extrato = this.operacaoService.pegarExtrato(id, filtro);
 			if(extrato == null) {
 				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 			}
 			return ResponseEntity.status(HttpStatus.OK).body(extrato);
 		}catch(Exception ex) {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			ex.printStackTrace();
+			List<OperacaoExtrato> erro = new ArrayList<>();
+			erro.add(new OperacaoExtrato(ex.getMessage(), null, 0, 0, null, null, null));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
 		}
 	}
 }

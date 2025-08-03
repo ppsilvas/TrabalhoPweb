@@ -34,7 +34,7 @@ public class AutenticacaoController {
 	@ApiResponse(responseCode="200", description="Realiza autenticacao no banco")
 	@PostMapping
 	public ResponseEntity<JwtDto> efetuarLogin(@RequestBody LoginForm login) {
-		var token = new UsernamePasswordAuthenticationToken(login.login(), login.senha());
+		var token = new UsernamePasswordAuthenticationToken(login.email(), login.senha());
 		var authentication = this.manager.authenticate(token);
 		var tokenJwt = tokenService.gerarToken((Usuario)authentication.getPrincipal());
 	
