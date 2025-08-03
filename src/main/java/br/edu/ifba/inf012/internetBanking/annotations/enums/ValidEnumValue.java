@@ -11,9 +11,10 @@ import jakarta.validation.Payload;
 
 @Documented
 @Constraint(validatedBy = EnumValueValidator.class)
-@Target({ ElementType.FIELD, ElementType.PARAMETER})
+@Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ValidEnumValue {
+	
 	String message() default "Valor inválido! Valor deve estar dentro do conjunto predefinido.";
 	
 	Class<?>[] groups() default {};

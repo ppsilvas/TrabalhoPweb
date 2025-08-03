@@ -1,5 +1,11 @@
 package br.edu.ifba.inf012.internetBanking.dtos.autenticacao;
 
-public record LoginForm(String login, String senha) {
+import jakarta.validation.constraints.NotBlank;
+
+public record LoginForm(
+		@NotBlank
+		String email,
+		@NotBlank
+		String senha) {
 
 }
