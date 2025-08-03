@@ -1,5 +1,6 @@
 import axios from '../../services/api';
 import {useState} from 'react';
+import UserForm from '../UserForm';
 
 function Cadastro(){
 
@@ -10,10 +11,6 @@ function Cadastro(){
         senha:''
     })
 
-    const handleInput = (event)=>{
-        setUsuario({...usuario, [event.target.name]: event.target.event})
-    }
-
     function handleSubmit(event){
         event.preventDefault()
         axios.post('/posts', {usuario})
@@ -21,14 +18,11 @@ function Cadastro(){
         .catch(err=>console.log(err))
     }
 
-    //TODO: Estilizar
     return(
-        <form onSubmit={handleSubmit}>
-            Nome: <input input type="text" onChange={handleInput} name="nome"></input>
-            CPF: <input input type="text" onChange={handleInput} name="cpf"></input>
-            E-mail: <input input type="text" onChange={handleInput} name="email"></input>
-            Senha: <input input type="text" onChange={handleInput} name="senha"></input>
-            <button>Cadastrar</button>
-        </form>
+        <UserForm
+            usuario={usuario}
+            setUsuario={setUsuario}
+            handleSubmit={handleSubmit}
+        />
     );
 }export default Cadastro;
