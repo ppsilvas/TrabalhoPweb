@@ -1,31 +1,35 @@
 import axios from '../../services/api';
-import {useState} from 'react';
+import { useState } from 'react';
 
-function Login(){
+function Login() {
 
     //TODO: Evitar repetição de código com Cadastro
     const [usuario, setUsuario] = useState({
-        email:'', 
-        senha:''
+        email: '',
+        senha: ''
     })
 
-    const handleInput = (event)=>{
-        setUsuario({...usuario, [event.target.name]: event.target.event})
+    const handleInput = (event) => {
+        setUsuario({ ...usuario, [event.target.name]: event.target.event })
     }
 
-    function handleSubmit(event){
+    const handleSubmit = async (event) => {
         event.preventDefault()
-        axios.post('/posts', {usuario})
-        .then(response=>console.log(response))
-        .catch(err=>console.log(err))
+        try {
+            const res = await axios.post("/posts", { usuario })
+            localStorage.setItem("token", res.data.token)
+            navigate("/contacorrente")
+        } catch (err) {
+            setErro("Credenciais inválidas")
+        }
     }
 
     //TODO: Estilizar
-    return(
+    return (
         <form onSubmit={handleSubmit}>
             E-mail: <input input type="text" onChange={handleInput} name="email"></input>
             Senha: <input input type="text" onChange={handleInput} name="senha"></input>
             <button>Entrar</button>
         </form>
     );
-}export default Login;
+} export default Login;
