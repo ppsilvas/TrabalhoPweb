@@ -20,9 +20,9 @@ export const handlers = [
 
     //Cadastro simulado 
     rest.post('/api/usuarios', async (req, res, ctx) => {
-        const { nome, email, senha } = await req.json();
+        const { nome, cpf, email, senha } = await req.json();
 
-        if (!nome || !email || !senha) {
+        if (!nome || !cpf || !email || !senha) {
             return res(
                 ctx.status(400),
                 ctx.json({ message: 'Dados incompletos' })
@@ -38,7 +38,7 @@ export const handlers = [
 
         return res(
             ctx.status(201),
-            ctx.json({ id: 123, nome, email })
+            ctx.json({ id: 123, nome, cpf, email })
         );
     })
 ];
