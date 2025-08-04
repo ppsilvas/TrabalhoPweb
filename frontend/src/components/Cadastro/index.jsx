@@ -9,7 +9,7 @@ function Cadastro(){
     const [cpf, setCpf] = useState('');
     const [senha, setSenha] = useState('');
 
-    const REGISTER_URL = '/posts';
+    const REGISTER_URL = '/usuarios';
 
     const handleSubmit = async (event) =>{
         event.preventDefault();
@@ -18,15 +18,13 @@ function Cadastro(){
                 JSON.stringify({nome, email, cpf, senha}),
                 {
                     headers:{'Content-Type':'application/json'},
-                    withCredentials: true
+                    //withCredentials: true
                 }
             );
             console.log(response.data);
         }
         catch(err){
-            if(!err?.response){
-                setErrMsg('Sem resposta do servidor');
-            }
+            console.error(err);
         }
     }
 
