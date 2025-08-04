@@ -1,12 +1,14 @@
 import axios from '../../services/api';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 
 function Login() {
     const { setAuth } = useAuth();
 
     const navigate = useNavigate()
+    const location = useLocation();
+    const from = location.state?.from?.pathname || '/contacorrente';
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
@@ -24,7 +26,8 @@ function Login() {
                 });
             const accessToken = res?.data?.accessToken;
             const roles = res?.data?.roles;
-            setAuth({email,senha,roles,accessToken})
+            setAuth({ user: email, senha, roles, accessToken })
+            navigate(from, { replace: true });
             console.log(res.data);
         } catch (err) {
             console.error(err);
