@@ -1,35 +1,76 @@
 import axios from '../../services/api';
 import {useState} from 'react';
-import {useNavigate} from 'react-router-dom';
+//import {useNavigate} from 'react-router-dom';
 
 function Cadastro(){
 
-    const navigate = useNavigate()
+    const [nome, setNome] = useState('');
+    const [email, setEmail] = useState('');
+    const [cpf, setCpf] = useState('');
+    const [senha, setSenha] = useState('');
 
-    const [usuario, setUsuario] = useState({
-        nome:'', 
-        cpf:'', 
-        email:'', 
-        senha:''
-    })
+    const REGISTER_URL = '/posts';
 
-    const handleInput = (event)=>{
-        setUsuario({...usuario, [event.target.name]: event.target.event})
-    }
-
-    function handleSubmit(event){
-        event.preventDefault()
-        axios.post('/posts', {usuario})
-        .then(response=>console.log(response))
-        .catch(err=>console.log(err))
+    const handleSubmit = async (event) =>{
+        event.preventDefault();
+        try{
+            const response = await axios.post(REGISTER_URL,
+                JSON.stringify({nome, email, cpf, senha}),
+                {
+                    headers:{'Content-Type':'application/json'},
+                    withCredentials: true
+                }
+            );
+            console.log(response.data);
+        }
+        catch(err){
+            if(!err?.response){
+                setErrMsg('Sem resposta do servidor');
+            }
+        }
     }
 
     return(
         <form onSubmit={handleSubmit}>
-            Nome: <input input type="text" onChange={handleInput} name="nome"></input>
-            CPF: <input input type="text" onChange={handleInput} name="cpf"></input>
-            E-mail: <input input type="text" onChange={handleInput} name="email"></input>
-            Senha: <input input type="text" onChange={handleInput} name="senha"></input>
+            <label htmlFor="nome">
+                Nome:
+            </label> 
+            <input 
+                type="text"
+                onChange={(event)=>setNome(event.target.value)}
+                id="nome"
+                autoComplete="off"
+                required
+            />
+            <label htmlFor="cpf">
+                CPF:
+            </label> 
+            <input 
+                type="text"
+                onChange={(event)=>setCpf(event.target.value)} 
+                id="cpf"
+                autoComplete="off"
+                required
+            />
+            <label htmlFor="email">
+                E-mail:
+            </label>            
+            <input 
+                type="text"
+                onChange={(event)=>setEmail(event.target.value)}
+                id="email"
+                autoComplete="off"
+                required
+            />            
+            <label htmlFor="senha">
+                Senha:
+            </label>  
+            <input 
+                type="text"
+                onChange={(event)=>setSenha(event.target.value)} 
+                id="senha"
+                required
+            /> 
             <button>Cadastrar</button>
         </form>
     );
