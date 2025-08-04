@@ -1,10 +1,10 @@
 import axios from '../../services/api';
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthContext from "../../context/AuthProvider";
+import useAuth from '../../hooks/useAuth';
 
 function Login() {
-    const { setAuth } = useContext(AuthContext);
+    const { setAuth } = useAuth();
 
     const navigate = useNavigate()
 
