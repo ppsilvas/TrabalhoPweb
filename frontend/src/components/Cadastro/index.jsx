@@ -28,6 +28,7 @@ function Cadastro() {
         }
     }
 
+    //TODO: Estilizar
     return (
         <form onSubmit={handleSubmit}>
             <label htmlFor="nome">

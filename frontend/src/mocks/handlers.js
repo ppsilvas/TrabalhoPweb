@@ -8,7 +8,7 @@ export const handlers = [
         if (email === 'teste@teste.com' && senha === '123456') {
             return res(
                 ctx.status(200),
-                ctx.json({ token: 'fake-jwt-token', nome: 'João' })
+                ctx.json({ token: 'fake-jwt-token', nome: 'João', id: 123 })
             );
         }
 
@@ -39,6 +39,27 @@ export const handlers = [
         return res(
             ctx.status(201),
             ctx.json({ id: 123, nome, cpf, email })
+        );
+    }),
+
+    //Conta corrente simulada
+    rest.get('/conta/:id', (req, res, ctx) => {
+        const { id } = req.params;
+        if (id === '123') {
+            return res(
+                ctx.status(200),
+                ctx.json({
+                    nome: 'João',
+                    numero: 123456,
+                    agencia: 7890,
+                    saldo: 2500.75
+                })
+            );
+        }
+
+        return res(
+            ctx.status(404),
+            ctx.json({ message: 'Conta não encontrada' })
         );
     })
 ];

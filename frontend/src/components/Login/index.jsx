@@ -24,9 +24,11 @@ function Login() {
                     headers: { 'Content-Type': 'application/json' },
                     //withCredentials:true
                 });
-            const accessToken = res?.data?.accessToken;
+            /*const accessToken = res?.data?.accessToken;
             const roles = res?.data?.roles;
-            setAuth({ user: email, senha, roles, accessToken })
+            setAuth({ user: email, senha, roles, accessToken })*/
+            const { token, nome, id } = res.data;
+            setAuth({ user: email, senha, accessToken: token, nome, id });
             navigate(from, { replace: true });
             console.log(res.data);
         } catch (err) {
