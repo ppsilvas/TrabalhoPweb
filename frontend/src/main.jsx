@@ -5,7 +5,8 @@ import { worker } from './mocks/browser';
 
 if (import.meta.env.DEV) {
   worker.start().then(() => {
-    ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    console.log('MSW iniciado');
+    createRoot(document.getElementById('root')).render(<AppRoutes />);
   });
 } else {
   createRoot(document.getElementById('root')).render(

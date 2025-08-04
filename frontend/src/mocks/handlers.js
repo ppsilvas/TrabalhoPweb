@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 export const handlers = [
     //login simulado
-    rest.post('/api/login', async (req, res, ctx) => {
+    rest.post('/login', async (req, res, ctx) => {
         const { email, senha } = await req.json();
 
         if (email === 'teste@teste.com' && senha === '123456') {
@@ -19,7 +19,7 @@ export const handlers = [
     }),
 
     //Cadastro simulado 
-    rest.post('/api/usuarios', async (req, res, ctx) => {
+    rest.post('/usuarios', async (req, res, ctx) => {
         const { nome, cpf, email, senha } = await req.json();
 
         if (!nome || !cpf || !email || !senha) {
