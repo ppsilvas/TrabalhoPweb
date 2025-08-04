@@ -2,7 +2,7 @@ import { rest } from 'msw';
 
 export const handlers = [
     //login simulado
-    rest.post('/login', async (req, res, ctx) => {
+    rest.post('/auth', async (req, res, ctx) => {
         const { email, senha } = await req.json();
 
         if (email === 'teste@teste.com' && senha === '123456') {
