@@ -1,6 +1,7 @@
 import {useEffect,useState} from 'react';
 import axios from '../../services/api';
 import useAuth from '../../hooks/useAuth';
+import Deposito from '../Deposito';
 
 function ContaCorrente(){
     const {auth} = useAuth();
@@ -35,6 +36,7 @@ function ContaCorrente(){
             <p>Conta: {conta.numero}</p>
             <p>Agência: {conta.agencia}</p>
             <p>Saldo: R${conta.saldo.toFixed(2)}</p>
+            <Deposito />
         </section>
     );
 }export default ContaCorrente;
