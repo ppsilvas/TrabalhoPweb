@@ -1,42 +1,42 @@
-import {useEffect,useState} from 'react';
+import { useEffect, useState } from 'react';
 import axios from '../../services/api';
 import useAuth from '../../hooks/useAuth';
-import Deposito from '../Deposito';
+import Operacoes from '../Operacoes';
 
-function ContaCorrente(){
-    const {auth} = useAuth();
+function ContaCorrente() {
+    const { auth } = useAuth();
     const [conta, setConta] = useState(null);
     const [erro, setErro] = useState('');
 
-    useEffect(()=>{
-        const fetchConta = async()=>{
-            try{
+    useEffect(() => {
+        const fetchConta = async () => {
+            try {
                 const response = await axios.get(`/conta/${auth.id}`, {
                     headers: {
-                        Authorization:'Bearer ${auth.accessToken'
+                        Authorization: 'Bearer ${auth.accessToken'
                     }
                 });
                 setConta(response.data);
             }
-            catch(err){
+            catch (err) {
                 console.error(err);
                 setErro('Erro ao carregar conta.');
             }
         };
 
         fetchConta();
-    },[auth]);
+    }, [auth]);
 
-    if(erro) return <p>{erro}</p>
-    if(!conta) return <p>Carregando...</p>
+    if (erro) return <p>{erro}</p>
+    if (!conta) return <p>Carregando...</p>
 
-    return(
+    return (
         <section>
             <h1>Olá, {conta.nome}!</h1>
             <p>Conta: {conta.numero}</p>
             <p>Agência: {conta.agencia}</p>
             <p>Saldo: R${conta.saldo.toFixed(2)}</p>
-            <Deposito />
+            <Operacoes operacaoSelecionada="deposito" />
         </section>
     );
-}export default ContaCorrente;
+} export default ContaCorrente;
