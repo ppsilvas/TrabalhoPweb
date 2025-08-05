@@ -36,7 +36,7 @@ function ContaCorrente() {
             <p>Conta: {conta.numero}</p>
             <p>Agência: {conta.agencia}</p>
             <p>Saldo: R${conta.saldo.toFixed(2)}</p>
-            <Operacoes operacaoSelecionada="deposito" />
+            <Operacoes operacaoSelecionada="extrato" />
         </section>
     );
 } export default ContaCorrente;
