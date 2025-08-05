@@ -1,9 +1,12 @@
+import { useState } from 'react';
 import Deposito from '../Deposito';
 import Saque from '../Saque';
 import Pagamento from '../Pagamento';
 import Extrato from '../Extrato';
 
-function Operacoes(props) {
+function Operacoes() {
+
+    const [operacaoSelecionada, setOperacaoSelecionada] = useState('');
 
     const items = [
         <Deposito key="deposito" id="deposito" />,
@@ -13,8 +16,14 @@ function Operacoes(props) {
     ];
 
     return (
-        <section>
-            {items.find(i => i.props.id === props.operacaoSelecionada)}
-        </section>
+        <>
+            <button onClick={() => setOperacaoSelecionada('deposito')}>Depósito</button>
+            <button onClick={() => setOperacaoSelecionada('saque')}>Saque</button>
+            <button onClick={() => setOperacaoSelecionada('pagamento')}>Pagamento</button>
+            <button onClick={() => setOperacaoSelecionada('deposito')}>Extrato</button>
+            <section>
+                {items.find(i => i.props.id === operacaoSelecionada)}
+            </section>
+        </>
     );
 } export default Operacoes
