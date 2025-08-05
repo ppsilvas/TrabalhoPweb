@@ -6,23 +6,31 @@ import Extrato from '../Extrato';
 
 function Operacoes() {
 
-    const [operacaoSelecionada, setOperacaoSelecionada] = useState('');
+    const [operacaoSelecionada, setOperacaoSelecionada] = useState('extrato');
 
     const items = [
-        <Deposito key="deposito" id="deposito" />,
-        <Saque key="saque" id="saque" />,
-        <Pagamento key="pagamento" id="pagamento" />,
-        <Extrato key="extrato" id="extrato" />
+        {id:'deposito', label: 'Depósito', componente: Deposito},
+        {id:'saque', label: 'Saque', componente: Saque},
+        {id:'pagamento', label: 'Pagamento', componente: Pagamento},
+        {id:'extrato', label: 'Extrato', componente: Extrato}
     ];
+
+    const OperacaoAtiva = items.find(i=>i.id===operacaoSelecionada)?.componente;
 
     return (
         <>
-            <button onClick={() => setOperacaoSelecionada('deposito')}>Depósito</button>
-            <button onClick={() => setOperacaoSelecionada('saque')}>Saque</button>
-            <button onClick={() => setOperacaoSelecionada('pagamento')}>Pagamento</button>
-            <button onClick={() => setOperacaoSelecionada('deposito')}>Extrato</button>
+            <div>
+                {items.map(i=>(
+                    <button
+                        key={i.id}
+                        onClick={()=>setOperacaoSelecionada(i.id)}
+                    >
+                        {i.label}
+                    </button>
+                ))}
+            </div>
             <section>
-                {items.find(i => i.props.id === operacaoSelecionada)}
+                {OperacaoAtiva && <OperacaoAtiva />}
             </section>
         </>
     );
