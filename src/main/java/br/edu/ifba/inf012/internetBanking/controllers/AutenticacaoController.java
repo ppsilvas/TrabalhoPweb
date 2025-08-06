@@ -16,7 +16,7 @@ import br.edu.ifba.inf012.internetBanking.services.JWTokenService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 
-@CrossOrigin(origins="http://localhost:3000")
+@CrossOrigin(origins="http://localhost:5173")
 @RestController
 @RequestMapping("/api/auth")
 public class AutenticacaoController {
