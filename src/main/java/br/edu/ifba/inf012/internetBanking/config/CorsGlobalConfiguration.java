@@ -14,7 +14,7 @@ public class CorsGlobalConfiguration {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("api/**")
-				.allowedOriginPatterns("http://192.168.0.250:5173")
+				.allowedOriginPatterns("http://172.16.7.255")
 				.allowedMethods("*")
 				.allowedHeaders("*")
 				.allowCredentials(true);

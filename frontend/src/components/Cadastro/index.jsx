@@ -9,7 +9,6 @@ function Cadastro() {
     const [cpf, setCpf] = useState('');
     const [senha, setSenha] = useState('');
     const [erro, setErro] = useState('');
-    const numero = 8;
 
     const REGISTER_URL = '/usuarios';
     let navigate = useNavigate();
@@ -18,7 +17,7 @@ function Cadastro() {
         event.preventDefault();
         try {
             const response = await axios.post(REGISTER_URL,
-                { nome, email, cpf, senha, conta:{numero} },
+                { nome, email, cpf, senha},
                 {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
