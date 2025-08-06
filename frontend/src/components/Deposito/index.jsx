@@ -61,7 +61,7 @@ function Deposito({ onOperacaoConcluida, OPERACOES_URL }) {
                 autoComplete="off"
                 required
             />
-            <button>Realizar Depósito</button>
+            <button>Efetuar Depósito</button>
             {msg && <p className="mensagem">{msg}</p>}
         </form>
     );

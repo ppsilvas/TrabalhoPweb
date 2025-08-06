@@ -63,7 +63,7 @@ function Saque({ onOperacaoConcluida, OPERACOES_URL }) {
                 autoComplete="off"
                 required
             />
-            <button>Realizar Saque</button>
+            <button>Efetuar Saque</button>
             {msg && <p className="mensagem">{msg}</p>}
         </form>
     );
