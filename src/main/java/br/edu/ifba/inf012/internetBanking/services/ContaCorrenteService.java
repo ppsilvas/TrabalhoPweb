@@ -5,7 +5,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import br.edu.ifba.inf012.internetBanking.dtos.contaCorrente.ContaDto;
-import br.edu.ifba.inf012.internetBanking.dtos.contaCorrente.ContaForm;
 import br.edu.ifba.inf012.internetBanking.models.ContaCorrente;
 import br.edu.ifba.inf012.internetBanking.models.Usuario;
 import br.edu.ifba.inf012.internetBanking.repositories.ContaCorrenteRepository;
@@ -21,8 +20,8 @@ public class ContaCorrenteService {
 		this.ccRepository = ccRepository;
 	}
 	
-	public ContaCorrente criarNovaContaCorrente(ContaForm contaCorrente, Usuario usuario) {
-		return this.ccRepository.save(new ContaCorrente(contaCorrente, usuario));
+	public ContaCorrente criarNovaContaCorrente(Usuario usuario) {
+		return this.ccRepository.save(new ContaCorrente(usuario));
 	}
 	
 	public ContaDto buscaContaCorrentePorUsuario(Long id) throws Exception {

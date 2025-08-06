@@ -37,7 +37,9 @@ public class UsuarioController {
 	public ResponseEntity<UsuarioDto> cadastrarUsuario(@RequestBody UsuarioForm usuario) {
 		try {
 			Usuario novoUsuario = this.usuarioService.criarNovoUsuario(usuario);
-			ContaCorrente novaConta = this.ccService.criarNovaContaCorrente(usuario.conta(),novoUsuario);
+			ContaCorrente novaConta = null;
+			while(novaConta == null)
+				novaConta = this.ccService.criarNovaContaCorrente(novoUsuario);
 			UsuarioDto retorno = new UsuarioDto("Usuário criado com sucesso",novoUsuario, novaConta);
 			return ResponseEntity.status(HttpStatus.CREATED).body(retorno);
 		}catch(Exception ex) {

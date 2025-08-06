@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
 
-import br.edu.ifba.inf012.internetBanking.dtos.contaCorrente.ContaForm;
 
 @Entity(name = "contas")
 public class ContaCorrente {
@@ -13,7 +12,7 @@ public class ContaCorrente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable=false,unique=true)
-    private int numero;
+    private Long numero;
     @Column(nullable=false)
     private int agencia;
     @Column(nullable=false)
@@ -23,13 +22,12 @@ public class ContaCorrente {
     private Usuario usuario;
     @OneToMany(mappedBy = "conta", cascade = CascadeType.ALL)
     private List<Operacao> operacoes;
-    
 
     public ContaCorrente() {
 		super();
 	}
 
-	public ContaCorrente(Long id, int numero, int agencia, String saldo, Usuario usuario) {
+	public ContaCorrente(Long id, Long numero, int agencia, String saldo, Usuario usuario) {
         this.id = id;
         this.numero = numero;
         this.agencia = agencia;
@@ -37,10 +35,9 @@ public class ContaCorrente {
         this.usuario = usuario;
     }
 
-    public ContaCorrente(ContaForm conta, Usuario usuario) {
-    	this.id = conta.id();
-    	this.numero = conta.numero();
-    	this.agencia = 001;
+    public ContaCorrente(Usuario usuario) {
+    	this.numero = 1000 + usuario.getId();
+    	this.agencia = 0001;
     	this.saldo = BigDecimal.ZERO.toString();
     	this.usuario = usuario;
     }
@@ -49,7 +46,7 @@ public class ContaCorrente {
         return id;
     }
 
-    public int getNumero() {
+    public Long getNumero() {
         return numero;
     }
 

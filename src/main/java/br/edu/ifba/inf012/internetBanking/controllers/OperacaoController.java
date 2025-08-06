@@ -101,7 +101,7 @@ public class OperacaoController {
 		}catch(Exception ex) {
 			ex.printStackTrace();
 			List<OperacaoExtrato> erro = new ArrayList<>();
-			erro.add(new OperacaoExtrato(ex.getMessage(), null, 0, 0, null, null, null));
+			erro.add(new OperacaoExtrato(ex.getMessage(), null, null, 0, null, null, null));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
 		}
 	}
