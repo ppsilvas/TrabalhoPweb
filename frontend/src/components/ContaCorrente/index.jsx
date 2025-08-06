@@ -10,22 +10,22 @@ function ContaCorrente() {
 
     const axiosPrivate = useAxiosPrivate();
 
-    useEffect(() => {
-        const fetchConta = async () => {
-            try {
-                const response = await axiosPrivate.get(`/conta/${auth.id}`, {
-                    headers: {
-                        Authorization: `Bearer ${auth.accessToken}`
-                    }
-                });
-                setConta(response.data);
-            }
-            catch (err) {
-                console.error(err);
-                setErro('Erro ao carregar conta');
-            }
-        };
+    const fetchConta = async () => {
+        try {
+            const response = await axiosPrivate.get(`/conta/${auth.id}`, {
+                headers: {
+                    Authorization: `Bearer ${auth.accessToken}`
+                }
+            });
+            setConta(response.data);
+        }
+        catch (err) {
+            console.error(err);
+            setErro('Erro ao carregar conta');
+        }
+    };
 
+    useEffect(() => {
         fetchConta();
     }, [auth]);
 
@@ -38,7 +38,7 @@ function ContaCorrente() {
             <p>Número: {conta.numero}</p>
             <p>Agência: {conta.agencia}</p>
             <p>Saldo: R${conta.saldo}</p>
-            <Operacoes operacaoSelecionada />
+            <Operacoes onOperacaoConcluida={fetchConta} OPERACOES_URL='/operacoes'/>
         </section>
     );
 } export default ContaCorrente;

@@ -9,7 +9,7 @@ function Login() {
 
     const navigate = useNavigate()
     const location = useLocation();
-    const from = location.state?.from?.pathname || '/contacorrente';
+    const from = location.state?.from?.pathname || '/';
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
@@ -64,9 +64,9 @@ function Login() {
             />
             <button>Entrar</button>
             <br />
-            <a>
+            <nav>
                 <Link to='/cadastro'>Não tem uma conta? Cadastre-se já!</Link>
-            </a>
+            </nav>
             {erro && <p className="erro">{erro}</p>}
         </form>
     );

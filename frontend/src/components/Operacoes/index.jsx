@@ -4,33 +4,33 @@ import Saque from '../Saque';
 import Pagamento from '../Pagamento';
 import Extrato from '../Extrato';
 
-function Operacoes() {
+function Operacoes({ onOperacaoConcluida }) {
 
     const [operacaoSelecionada, setOperacaoSelecionada] = useState('extrato');
 
     const items = [
-        {id:'deposito', label: 'Depósito', componente: Deposito},
-        {id:'saque', label: 'Saque', componente: Saque},
-        {id:'pagamento', label: 'Pagamento', componente: Pagamento},
-        {id:'extrato', label: 'Extrato', componente: Extrato}
+        { id: 'deposito', label: 'Depósito', componente: Deposito },
+        { id: 'saque', label: 'Saque', componente: Saque },
+        { id: 'pagamento', label: 'Pagamento', componente: Pagamento },
+        { id: 'extrato', label: 'Extrato', componente: Extrato }
     ];
 
-    const OperacaoAtiva = items.find(i=>i.id===operacaoSelecionada)?.componente;
+    const OperacaoAtiva = items.find(i => i.id === operacaoSelecionada)?.componente;
 
     return (
         <>
             <div>
-                {items.map(i=>(
+                {items.map(i => (
                     <button
                         key={i.id}
-                        onClick={()=>setOperacaoSelecionada(i.id)}
+                        onClick={() => setOperacaoSelecionada(i.id)}
                     >
                         {i.label}
                     </button>
                 ))}
             </div>
             <section>
-                {OperacaoAtiva && <OperacaoAtiva />}
+                {OperacaoAtiva && <OperacaoAtiva onOperacaoConcluida={onOperacaoConcluida} OPERACOES_URL='/operacoes'/>}
             </section>
         </>
     );
