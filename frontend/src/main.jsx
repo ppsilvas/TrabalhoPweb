@@ -5,13 +5,13 @@ import { worker } from './mocks/browser';
 import { AuthProvider } from './context/AuthProvider';
 
 if (import.meta.env.DEV) {
-  worker.start().then(() => {
-    console.log('MSW iniciado');
+  //worker.start().then(() => {
+    //console.log('MSW iniciado');
     createRoot(document.getElementById('root')).render(
       <AuthProvider>
         <AppRoutes />
       </AuthProvider>);
-  });
+  //});
 } else {
   createRoot(document.getElementById('root')).render(
     <StrictMode>

@@ -13,7 +13,7 @@ function ContaCorrente() {
             try {
                 const response = await axios.get(`/conta/${auth.id}`, {
                     headers: {
-                        Authorization: 'Bearer ${auth.accessToken'
+                        Authorization: `Bearer ${auth.accessToken}`
                     }
                 });
                 setConta(response.data);
@@ -36,7 +36,7 @@ function ContaCorrente() {
             <p>Conta: {conta.numero}</p>
             <p>Agência: {conta.agencia}</p>
             <p>Saldo: R${conta.saldo.toFixed(2)}</p>
-            <Operacoes operacaoSelecionada="extrato" />
+            <Operacoes operacaoSelecionada />
         </section>
     );
 } export default ContaCorrente;
