@@ -1,4 +1,4 @@
-import api from '../../services/api';
+import axios from '../../services/api';
 import { useState } from 'react';
 //import {useNavigate} from 'react-router-dom';
 
@@ -15,7 +15,7 @@ function Cadastro() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await api.post(REGISTER_URL,
+            const response = await axios.post(REGISTER_URL,
                 { nome, email, cpf, senha, conta:{numero} },
                 {
                     headers: { 'Content-Type': 'application/json' },

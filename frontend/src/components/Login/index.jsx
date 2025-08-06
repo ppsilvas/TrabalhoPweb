@@ -2,6 +2,7 @@ import axios from '../../services/api';
 import { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import { jwtDecode } from 'jwt-decode';
 
 function Login() {
     const { setAuth } = useAuth();
@@ -24,11 +25,10 @@ function Login() {
                     headers: { 'Content-Type': 'application/json' },
                     //withCredentials:true
                 });
-            /*const accessToken = res?.data?.accessToken;
-            const roles = res?.data?.roles;
-            setAuth({ user: email, senha, roles, accessToken })*/
-            const { token, nome, id } = res.data;
-            setAuth({ user: email, senha, accessToken: token, nome, id });
+            const token = res.data.token;
+            const decoded = jwtDecode(token);
+            const id = decoded.userId;
+            setAuth({ accessToken: token, id });
             navigate(from, { replace: true });
             console.log(res.data);
         } catch (err) {

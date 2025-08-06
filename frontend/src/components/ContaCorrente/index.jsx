@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from '../../services/api';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import useAuth from '../../hooks/useAuth';
 import Operacoes from '../Operacoes';
 
@@ -8,10 +8,12 @@ function ContaCorrente() {
     const [conta, setConta] = useState(null);
     const [erro, setErro] = useState('');
 
+    const axiosPrivate = useAxiosPrivate();
+
     useEffect(() => {
         const fetchConta = async () => {
             try {
-                const response = await axios.get(`/conta/${auth.id}`, {
+                const response = await axiosPrivate.get(`/conta/${auth.id}`, {
                     headers: {
                         Authorization: `Bearer ${auth.accessToken}`
                     }
@@ -32,10 +34,10 @@ function ContaCorrente() {
 
     return (
         <section>
-            <h1>Olá, {conta.nome}!</h1>
-            <p>Conta: {conta.numero}</p>
+            <h1>{conta.usuario}</h1>
+            <p>Número: {conta.numero}</p>
             <p>Agência: {conta.agencia}</p>
-            <p>Saldo: R${conta.saldo.toFixed(2)}</p>
+            <p>Saldo: R${conta.saldo}</p>
             <Operacoes operacaoSelecionada />
         </section>
     );
