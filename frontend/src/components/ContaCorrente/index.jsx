@@ -22,7 +22,7 @@ function ContaCorrente() {
             }
             catch (err) {
                 console.error(err);
-                setErro('Erro ao carregar conta.');
+                setErro('Erro ao carregar conta');
             }
         };
 

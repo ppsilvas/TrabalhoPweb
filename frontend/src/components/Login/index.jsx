@@ -13,6 +13,7 @@ function Login() {
 
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
+    const [erro, setErro] = useState('');
 
     const LOGIN_URL = '/auth';
 
@@ -32,6 +33,7 @@ function Login() {
             navigate(from, { replace: true });
             console.log(res.data);
         } catch (err) {
+            setErro('E-mail ou senha inválidos')
             console.error(err);
         }
     }
@@ -61,8 +63,11 @@ function Login() {
                 required
             />
             <button>Entrar</button>
-            <br></br>
-            <Link to='/cadastro'>Não tem uma conta? Cadastre-se já!</Link>
+            <br />
+            <a>
+                <Link to='/cadastro'>Não tem uma conta? Cadastre-se já!</Link>
+            </a>
+            {erro && <p className="erro">{erro}</p>}
         </form>
     );
 } export default Login;

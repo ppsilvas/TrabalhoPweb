@@ -8,6 +8,7 @@ function Cadastro() {
     const [email, setEmail] = useState('');
     const [cpf, setCpf] = useState('');
     const [senha, setSenha] = useState('');
+    const [erro, setErro] = useState('');
     const numero = 8;
 
     const REGISTER_URL = '/usuarios';
@@ -27,6 +28,7 @@ function Cadastro() {
             console.log(response.data);
         }
         catch (err) {
+            setErro('Cadastro inválido! Teste novamente');
             console.error(err);
         }
     }
@@ -74,6 +76,7 @@ function Cadastro() {
                 required
             />
             <button>Cadastrar</button>
+            {erro && <p className="erro">{erro}</p>}
         </form>
     );
 } export default Cadastro;
