@@ -25,7 +25,7 @@ public class ContaCorrenteService {
 	}
 	
 	public ContaDto buscaContaCorrentePorUsuario(Long id) throws Exception {
-		Optional<ContaCorrente> conta = this.ccRepository.findById(id);
+		Optional<ContaCorrente> conta = this.ccRepository.findByUsuarioId(id);
 		if(conta.isEmpty())
 			throw new Exception("Usuario não existe");
 		return new ContaDto(conta.get());

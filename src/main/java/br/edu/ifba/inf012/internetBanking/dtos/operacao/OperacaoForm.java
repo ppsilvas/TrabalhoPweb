@@ -14,7 +14,7 @@ public record OperacaoForm(
 		String valor,
 		@NotBlank
 		@Positive
-		Long contaId,
+		Long numConta,
 		@NotBlank
 		@ValidEnumValue(enumClass = TipoOperacao.class, ignoreCase = true)
 		TipoOperacao tipo,

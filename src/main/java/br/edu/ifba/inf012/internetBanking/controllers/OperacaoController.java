@@ -87,15 +87,15 @@ public class OperacaoController {
 	
 	@Operation(summary="Listar Operacações", description="Retorna o extrato o usuario(lista das operações)")
 	@ApiResponse(responseCode="200", description="Retorna lista de operações")
-	@GetMapping("/{id}/extrato")
+	@GetMapping("/{numConta}/extrato")
 	@Secured(value = {"ROLE_OWNER"})
 	public ResponseEntity<List<OperacaoExtrato>> extrato(
 			@RequestBody(required=false) @Valid FiltroExtratoDto filtro,
-			@PathVariable Long id) throws Exception{
+			@PathVariable Long numConta) throws Exception{
 		try {	
-			List<OperacaoExtrato> extrato = this.operacaoService.pegarExtrato(id, filtro);
-			if(extrato == null) {
-				return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+			List<OperacaoExtrato> extrato = this.operacaoService.pegarExtrato(numConta, filtro);
+			if(extrato.isEmpty() || extrato == null) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 			}
 			return ResponseEntity.status(HttpStatus.OK).body(extrato);
 		}catch(Exception ex) {
