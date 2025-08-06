@@ -1,6 +1,6 @@
 import axios from '../../services/api';
 import { useState } from 'react';
-//import {useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 function Cadastro() {
 
@@ -11,6 +11,7 @@ function Cadastro() {
     const numero = 8;
 
     const REGISTER_URL = '/usuarios';
+    let navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -21,7 +22,8 @@ function Cadastro() {
                     headers: { 'Content-Type': 'application/json' },
                     withCredentials: true
                 }
-            );
+            );  
+            navigate('/login');
             console.log(response.data);
         }
         catch (err) {

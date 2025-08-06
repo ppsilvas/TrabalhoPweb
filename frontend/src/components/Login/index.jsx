@@ -61,6 +61,8 @@ function Login() {
                 required
             />
             <button>Entrar</button>
+            <br></br>
+            <Link to='/cadastro'>Não tem uma conta? Cadastre-se já!</Link>
         </form>
     );
 } export default Login;
