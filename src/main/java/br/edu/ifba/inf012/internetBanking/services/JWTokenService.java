@@ -30,7 +30,7 @@ public class JWTokenService {
 				.withIssuer(issuer)
 				.withSubject(usuario.getEmail())
 				.withClaim("userId", usuario.getId())
-				.withClaim("contaId", usuario.getConta().getId())
+				.withClaim("numConta", usuario.getConta().getNumero())
 				.withClaim("role", usuario.getRoles().getFirst().getRole())
 				.withExpiresAt(this.dataExpiracao())
 				.sign(algoritmo);
