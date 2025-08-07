@@ -25,7 +25,8 @@ function Saque({ onOperacaoConcluida, OPERACOES_URL }) {
 
         try {
             const response = await axiosPrivate.post(OPERACOES_URL + `/${usuarioId}/saque`,
-                { valor, contaId: parseInt(conta), tipo: 'SAQUE', descricao: 'Operação de saque.', usuarioId}
+                { valor, numConta: parseInt(conta), tipo: 'SAQUE', descricao: 'Operação de saque.', id: usuarioId},
+                {params: {usuarioId}}
             );
             onOperacaoConcluida();
             setMsg('Saque realizado com sucesso!');
