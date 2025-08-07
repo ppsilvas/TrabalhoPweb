@@ -1,5 +1,6 @@
 package br.edu.ifba.inf012.internetBanking.repositories;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public interface OperacaoRepository extends JpaRepository<Operacao, Long>{
 				+ "AND DATE(o.data_hora) BETWEEN :inicio AND :fim",
 			nativeQuery = true
 	)
-	List<Operacao> findByContaEntreDatas(@Param("conta") Long conta,@Param("inicio") LocalDateTime inicio,@Param("fim") LocalDateTime fim);
+	List<Operacao> findByContaEntreDatas(@Param("conta") Long conta,@Param("inicio") LocalDate inicio,@Param("fim") LocalDate fim);
 	
 	@Query(
 			value="SELECT o.* FROM operacoes AS o "
@@ -39,7 +40,7 @@ public interface OperacaoRepository extends JpaRepository<Operacao, Long>{
 				+ "AND DATE(o.data_hora) BETWEEN :inicio AND :fim",
 			nativeQuery = true
 	)
-	List<Operacao> findByContaETipoEntreDatas(@Param("conta") Long conta,@Param("tipo") String tipo,@Param("inicio") LocalDateTime inicio,@Param("fim") LocalDateTime fim);
+	List<Operacao> findByContaETipoEntreDatas(@Param("conta") Long conta,@Param("tipo") String tipo,@Param("inicio") LocalDate inicio,@Param("fim") LocalDate fim);
 	
 	@Query(
 			value="SELECT o.* FROM operacoes AS o "

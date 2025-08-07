@@ -98,7 +98,7 @@ public class OperacaoController {
 	@GetMapping("/{numConta}/extrato")
 	@Secured(value = {"ROLE_OWNER"})
 	public ResponseEntity<List<OperacaoExtrato>> extrato(
-			@RequestBody(required=false) @Valid FiltroExtratoDto filtro,
+			FiltroExtratoDto filtro,
 			@PathVariable Long numConta) throws Exception{
 		try {	
 			List<OperacaoExtrato> extrato = this.operacaoService.pegarExtrato(numConta, filtro);

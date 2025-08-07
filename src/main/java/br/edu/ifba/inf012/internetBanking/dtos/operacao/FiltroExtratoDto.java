@@ -1,5 +1,6 @@
 package br.edu.ifba.inf012.internetBanking.dtos.operacao;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import br.edu.ifba.inf012.internetBanking.annotations.datas.DatasConsistentes;
@@ -12,8 +13,8 @@ public record FiltroExtratoDto(
 		@ValidEnumValue(enumClass = TipoOperacao.class, ignoreCase = true)
 		String tipo,
 		@PastOrPresent
-		LocalDateTime dataInicio,
+		LocalDate dataInicio,
 		@PastOrPresent
-		LocalDateTime dataFim) {
+		LocalDate dataFim) {
 
 }
