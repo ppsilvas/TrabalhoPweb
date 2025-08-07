@@ -42,9 +42,12 @@ public class UsuarioController {
 				novaConta = this.ccService.criarNovaContaCorrente(novoUsuario);
 			UsuarioDto retorno = new UsuarioDto("Usuário criado com sucesso",novoUsuario, novaConta);
 			return ResponseEntity.status(HttpStatus.CREATED).body(retorno);
-		}catch(Exception ex) {
+		}catch(IllegalArgumentException ex) {
 			UsuarioDto erro = new UsuarioDto(ex.getMessage(), null, null, null, null);
 			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+		}catch(Exception ex) {
+			UsuarioDto erro = new UsuarioDto(ex.getMessage(), null, null, null, null);
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
 		}
 	}
 

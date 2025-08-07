@@ -44,10 +44,12 @@ public class OperacaoController {
 		try {
 			OperacaoDto depositoRealizado = this.operacaoService.realizarDeposito(operacao);
 			return ResponseEntity.status(HttpStatus.CREATED).body(depositoRealizado);
-		}catch(Exception ex) {
+		}catch(IllegalArgumentException ex) {
 			OperacaoDto erro = new OperacaoDto(ex.getMessage(),new ContaDto(new ContaCorrente()));
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
-			
+		}catch(Exception ex) {
+			OperacaoDto erro = new OperacaoDto(ex.getMessage(),new ContaDto(new ContaCorrente()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
 		}
 	}
 	
@@ -59,12 +61,15 @@ public class OperacaoController {
 		try {
 			OperacaoDto saqueRealizado = this.operacaoService.realizarSaque(operacao, usuarioId);
 			return ResponseEntity.status(HttpStatus.CREATED).body(saqueRealizado);
-		}catch(Exception ex) {
+		}catch(IllegalArgumentException ex) {
 			OperacaoDto erro = new OperacaoDto(ex.getMessage(),new ContaDto(new ContaCorrente()));
 			if(ex.getMessage().equals("Conta não existe"))
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
 			else
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+		}catch(Exception ex) {
+			OperacaoDto erro = new OperacaoDto(ex.getMessage(),new ContaDto(new ContaCorrente()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
 		}
 	}
 	
@@ -76,12 +81,15 @@ public class OperacaoController {
 		try{
 		OperacaoDto pagamentoRealizado = this.operacaoService.realizarPagamento(operacao, usuarioId);
 		return ResponseEntity.status(HttpStatus.CREATED).body(pagamentoRealizado);
-		}catch(Exception ex) {
+		}catch(IllegalArgumentException ex) {
 			OperacaoDto erro = new OperacaoDto(ex.getMessage(),new ContaDto(new ContaCorrente()));
 			if(ex.getMessage().equals("Conta não existe"))
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(erro);
 			else
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
+		}catch(Exception ex) {
+			OperacaoDto erro = new OperacaoDto(ex.getMessage(),new ContaDto(new ContaCorrente()));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(erro);
 		}
 	}
 	

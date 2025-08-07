@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import br.edu.ifba.inf012.internetBanking.clients.EmailClient;
+import br.edu.ifba.inf012.internetBanking.clients.EmailForm;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.FiltroExtratoDto;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoDto;
 import br.edu.ifba.inf012.internetBanking.dtos.operacao.OperacaoExtrato;
@@ -19,20 +22,24 @@ import br.edu.ifba.inf012.internetBanking.repositories.OperacaoRepository;
 @Service
 public class OperacaoService {
 
+	@Value("${email.adress.mailFrom}")
+	private String mailFrom;
 	private OperacaoRepository operacaoRepository;
 	private ContaCorrenteRepository ccRepository;
+	private EmailClient emailClient;
 	
-	public OperacaoService(OperacaoRepository operacaoRepository, ContaCorrenteRepository ccRepository) {
+	public OperacaoService(OperacaoRepository operacaoRepository, ContaCorrenteRepository ccRepository, EmailClient emailClient) {
 		super();
 		this.operacaoRepository = operacaoRepository;
 		this.ccRepository = ccRepository;
+		this.emailClient = emailClient;
 	}
 
-	public OperacaoDto realizarDeposito(OperacaoForm operacao) throws Exception {
+	public OperacaoDto realizarDeposito(OperacaoForm operacao) throws Exception,IllegalArgumentException {
 		Optional<ContaCorrente> contaCorrenteDeposito = this.ccRepository.findByNumero(operacao.numConta());
 		
 		if(contaCorrenteDeposito.isEmpty())
-			throw new Exception("Conta não existe");
+			throw new IllegalArgumentException("Conta não existe");
 		
 		ContaCorrente ccAtualizadaDeposito = contaCorrenteDeposito.get();
 		BigDecimal novoSaldo = ccAtualizadaDeposito.getSaldoDecimal().add(new BigDecimal(operacao.valor()));
@@ -40,14 +47,22 @@ public class OperacaoService {
 		this.ccRepository.save(ccAtualizadaDeposito);
 		
 		Operacao novaOperacao =  this.operacaoRepository.save(new Operacao(operacao, ccAtualizadaDeposito));
+		
+		if(novaOperacao == null)
+			throw new Exception("Erro ao realizar o deposito");
+		this.emailClient.sendEmail(new EmailForm(null, mailFrom,
+				ccAtualizadaDeposito.getUsuario().getEmail(),
+				"Depósito realizado",
+				"Você recebeu un depósito de R$" + operacao.valor() + ". Saldo atual: R$" + novoSaldo.toString()));
+		
 		return new OperacaoDto("Deposito realizado com sucesso",novaOperacao.getConta());
 	}
 	
-	public OperacaoDto realizarSaque(OperacaoForm operacao, Long usuarioId) throws Exception {
+	public OperacaoDto realizarSaque(OperacaoForm operacao, Long usuarioId) throws Exception,IllegalArgumentException {
 		Optional<ContaCorrente> contaCorrenteSaque = this.ccRepository.findByNumero(operacao.numConta());
 		
 		if(contaCorrenteSaque.isEmpty())
-			throw new Exception("Conta não existe");
+			throw new IllegalArgumentException("Conta não existe");
 		
 		ContaCorrente ccAtualizadaSaque = contaCorrenteSaque.get();
 				
@@ -62,15 +77,22 @@ public class OperacaoService {
 		this.ccRepository.save(ccAtualizadaSaque);
 				
 		Operacao novaOperacao =  this.operacaoRepository.save(new Operacao(operacao, ccAtualizadaSaque));
+		
+		if(novaOperacao == null)
+			throw new Exception("Erro ao realizar o saque");
+		this.emailClient.sendEmail(new EmailForm(null, mailFrom,
+				ccAtualizadaSaque.getUsuario().getEmail(),
+				"Saque realizado",
+				"Você fez um saque de R$" + operacao.valor() + ". Saldo atual: R$" + novoSaldo.toString()));
 				
 		return new OperacaoDto("Saque realizado com sucesso", novaOperacao.getConta());
 	}
 	
-	public OperacaoDto realizarPagamento(OperacaoForm operacao, Long usuarioId) throws Exception {
+	public OperacaoDto realizarPagamento(OperacaoForm operacao, Long usuarioId) throws Exception,IllegalArgumentException {
 		Optional<ContaCorrente> contaCorrentePagamento = this.ccRepository.findByNumero(operacao.numConta());
 		
 		if(contaCorrentePagamento.isEmpty())
-			throw new Exception("Conta não existe");
+			throw new IllegalArgumentException("Conta não existe");
 		
 		ContaCorrente ccAtualizadaPagamento = contaCorrentePagamento.get();
 		if(ccAtualizadaPagamento.getSaldoDecimal().compareTo(new BigDecimal(operacao.valor()))<=0)
@@ -83,11 +105,14 @@ public class OperacaoService {
 		ccAtualizadaPagamento.setSaldo(novoSaldo.toString());
 		this.ccRepository.save(ccAtualizadaPagamento);
 		
-		System.out.println(ccAtualizadaPagamento.getUsuario());
-		
 		Operacao novaOperacao = this.operacaoRepository.save(new Operacao(operacao, ccAtualizadaPagamento));
 		
-		System.out.println(novaOperacao.getConta().getUsuario());
+		if(novaOperacao == null)
+			throw new Exception("Erro ao realizar o pagamento");
+		this.emailClient.sendEmail(new EmailForm(null, mailFrom,
+				ccAtualizadaPagamento.getUsuario().getEmail(),
+				"Pagamento realizado",
+				"Você fez um pagamento de R$" + operacao.valor() + ". Saldo atual: R$" + novoSaldo.toString()));
 		
 		return new OperacaoDto("Pagamento realizado com sucesso",novaOperacao.getConta());
 	}
