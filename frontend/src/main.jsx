@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import AppRoutes from './components/AppRoutes'
 import { worker } from './mocks/browser';
 import { AuthProvider } from './context/AuthProvider';
+import './index.css';
 
 if (import.meta.env.DEV) {
   //worker.start().then(() => {
