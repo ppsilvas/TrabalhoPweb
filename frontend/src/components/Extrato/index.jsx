@@ -1,6 +1,7 @@
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import useAuth from "../../hooks/useAuth";
 import { useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
 
 function Extrato({ OPERACOES_URL }) {
@@ -15,13 +16,15 @@ function Extrato({ OPERACOES_URL }) {
     const [extrato, setExtrato] = useState('');
     const [erro, setErro] = useState('');
 
-    const usuarioId = auth.id;
+    //const usuarioId = auth.id;
+    const decoded = jwtDecode(auth.accessToken);
+    const numConta = decoded.numConta;
 
     const fetchExtrato = async () => {
         try {
-            const response = await axiosPrivate.get(OPERACOES_URL + `/${usuarioId}/extrato`,
-                { tipo: filtroSelecionado, dataInicio, dataFim, id: usuarioId }
-            );
+            const response = await axiosPrivate.get(OPERACOES_URL + `/${numConta}/extrato`, {
+                params:{ tipo: filtroSelecionado, dataInicio, dataFim, numConta: parseInt(numConta) }
+            });
             setExtrato(response.data);
             setErro('');
         }
@@ -45,9 +48,9 @@ function Extrato({ OPERACOES_URL }) {
                     onChange={(event) => setFiltroSelecionado(event.target.value)}
                     required
                 >
-                    {filtros.map(f => (
+                    {filtros.map((f, index) => (
                         <option
-                            key={f.indexOf}
+                            key={index}
                             value={f}
                         >
                             {f}

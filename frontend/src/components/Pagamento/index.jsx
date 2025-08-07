@@ -26,7 +26,8 @@ function Pagamento({ onOperacaoConcluida, OPERACOES_URL }) {
 
         try {
             const response = await axiosPrivate.post(OPERACOES_URL + `/${usuarioId}/pagamento`,
-                { valor, contaId: parseInt(conta), tipo: 'PAGAMENTO', descricao, usuarioId }
+                { valor, numConta: parseInt(conta), tipo: 'PAGAMENTO', descricao, id: usuarioId },
+                { params: { usuarioId } }
             );
             onOperacaoConcluida();
             setMsg('Pagamento realizado com sucesso!');

@@ -10,6 +10,7 @@ function Deposito({ onOperacaoConcluida, OPERACOES_URL }) {
     const [msg, setMsg] = useState('');
 
     const axiosPrivate = useAxiosPrivate();
+    const usuarioId = auth.id;
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -23,7 +24,7 @@ function Deposito({ onOperacaoConcluida, OPERACOES_URL }) {
 
         try {
             const response = await axiosPrivate.post(OPERACOES_URL + '/deposito',
-                { valor, contaId: parseInt(conta), tipo: 'DEPOSITO', descricao: 'Operação de depósito.' }
+                { id: usuarioId, valor, numConta: parseInt(conta), tipo: 'DEPOSITO', descricao: 'Operação de depósito.' }
             );
             onOperacaoConcluida();
             setMsg('Depósito realizado com sucesso!');
