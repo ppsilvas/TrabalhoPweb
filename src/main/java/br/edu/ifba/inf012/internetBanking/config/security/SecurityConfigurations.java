@@ -39,7 +39,7 @@ public class SecurityConfigurations {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
-				.cors(cors -> cors.configurationSource(corsConfigurationSource()))
+				//.cors(cors -> cors.configurationSource(corsConfigurationSource()))
 				.sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.authorizeHttpRequests(req -> {
 					req.requestMatchers(HttpMethod.POST, "/api/auth").permitAll();
@@ -50,7 +50,7 @@ public class SecurityConfigurations {
 				.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class)
 				.build();
 	}
-
+	/*
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
@@ -66,7 +66,7 @@ public class SecurityConfigurations {
 
 		return source;
 	}
-
+	*/
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 		return configuration.getAuthenticationManager();
